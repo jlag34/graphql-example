@@ -1,6 +1,6 @@
 import Sequelize from 'sequelize';
 import _ from 'lodash';
-import Faker from 'faker'
+import Faker from 'faker';
 
 const Conn = new Sequelize(
     'graphqlexp',
@@ -34,6 +34,10 @@ const Post = Conn.define('post', {
     title: {
         type: Sequelize.STRING,
         allowNull: false
+    },
+    content: {
+        type: Sequelize.STRING,
+        allowNull: false 
     }
 });
 
@@ -47,6 +51,11 @@ Conn.sync({force: true}).then(() => {
             firstName: Faker.name.firstName(),
             lastName: Faker.name.lastName(),
             email: Faker.internet.email()
+        }).then(person => {
+            return person.createPost({
+                title: `Sample title by ${person.firstName}`,
+                content: `This is a sample article`
+            });
         });
     });
 });
