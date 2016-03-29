@@ -1,4 +1,4 @@
-# Weather App
+# GraphQL Example
 
 GraphQL example using GraphiQL for friendly demonstration purposes. Technologies used: GraphQL, Node, PostgreSQL
 
