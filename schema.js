@@ -1,4 +1,10 @@
-import { GraphQLObjectType, GraphQLInt, GraphQLString, GraphQLList, GraphQLSchema } from 'graphql';
+import { GraphQLObjectType, 
+         GraphQLInt, 
+         GraphQLString, 
+         GraphQLList, 
+         GraphQLSchema, 
+         GraphQLNonNull } from 'graphql';
+         
 import Db from './db';
 
 const Person = new GraphQLObjectType({
@@ -102,8 +108,39 @@ const Query = new GraphQLObjectType({
     }
 });
 
+const Mutation = new GraphQLObjectType({
+    name: 'Mutation',
+    description: 'Functions to create stuff',
+    fields() {
+        return {
+            addPerson: {
+                type: Person, 
+                args: {
+                    firstName: {
+                        type: new GraphQLNonNull(GraphQLString)
+                    },
+                    lastName: {
+                        type: new GraphQLNonNull(GraphQLString)
+                    },
+                    email: {
+                        type: new GraphQLNonNull(GraphQLString)
+                    }
+                },
+                resolve(_, args) {
+                    return Db.models.person.create({
+                       firstName: args.firstName,
+                       lastName: args.lastName,
+                       email: args.email.toLowerCase() 
+                    });
+                }
+            }
+        };
+    }
+});
+
 const Schema = new GraphQLSchema({
-    query: Query
+    query: Query,
+    mutation: Mutation
 });
 
 export default Schema;
