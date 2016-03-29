@@ -29,8 +29,14 @@ const Person = new GraphQLObjectType({
                 resolve(person) {
                     return person.email;
                 }
+            },
+            posts: {
+                type: new GraphQLList(Post),
+                resolve(person) {
+                    return person.getPosts();
+                }
             }
-        }
+        };
     }
 });
 
@@ -54,7 +60,13 @@ const Post = new GraphQLObjectType({
             content: {
                 type: GraphQLString,
                 resolve(post) {
-                    return post.conent
+                    return post.content
+                }
+            },
+            person: {
+                type: Person,
+                resolve(post) {
+                    return post.getPerson();
                 }
             }
         };
